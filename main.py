@@ -13,7 +13,7 @@ pygame.init()
 
 player = None
 
-pygame.display.set_caption('Игра)0))')
+pygame.display.set_caption('Прикольная игра)0))')
 
 all_sprites = pygame.sprite.Group()
 wall_tiles_group = pygame.sprite.Group()
