@@ -13,6 +13,8 @@ pygame.init()
 
 player = None
 
+pygame.display.set_caption('Игра)0))')
+
 all_sprites = pygame.sprite.Group()
 wall_tiles_group = pygame.sprite.Group()
 structure_tiles_group = pygame.sprite.Group()
