@@ -163,8 +163,8 @@ class Walls_Tile(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect().move(
             tile_width * pos_x, tile_height * pos_y)
-        bad_coords.append([range(tile_width * pos_x, tile_width * pos_x + 32),
-                           range(tile_height * pos_y, tile_height * pos_y + 64)])
+        bad_coords.append([range(tile_width * pos_x - 32, tile_width * pos_x + 48),
+                           range(tile_height * pos_y - 48, tile_height * pos_y + 2)])
 
 
 class Passage_Tile(pygame.sprite.Sprite):
@@ -206,13 +206,13 @@ class Player(pygame.sprite.Sprite):
             self.y = 10
         if key[pygame.K_UP]:
             self.y = -10
+        flag = True
         for i in bad_coords:
             if self.rect.x + self.x in i[0] and self.rect.y + self.y in i[1]:
-                pass
-            else:
-                self.rect.x += self.x
-                self.rect.y += self.y
-                break
+                flag = False
+        if flag:
+            self.rect.x += self.x
+            self.rect.y += self.y
 
 
 class Enemy(pygame.sprite.Sprite):
