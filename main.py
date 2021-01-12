@@ -75,8 +75,9 @@ passage_tiles_image = {
 }
 
 destructible_tiles_image = {
-    'c': random_texture('concrete'),
-    'b': random_texture('boards')
+    'c': load_image('concrete.png'),
+    'b': load_image('boards.png'),
+    'destroyed': load_image('destroying.png')
 }
 
 error_tiles_image = {
@@ -177,13 +178,16 @@ class Passage_Tile(pygame.sprite.Sprite):
 
 class Destructible_Tile(pygame.sprite.Sprite):
     def __init__(self, tile_type, pos_x, pos_y):
-        super().__init__(passage_tiles_group, all_sprites)
+        super().__init__(destructible_tiles_group, all_sprites)
         self.image = destructible_tiles_image[tile_type]
         self.rect = self.image.get_rect().move(
             tile_width * pos_x, tile_height * pos_y)
+        bad_coords.append([range(tile_width * pos_x - 32, tile_width * pos_x + 48),
+                           range(tile_height * pos_y - 48, tile_height * pos_y + 2)])
 
-    def update(self):
-        pass
+    def destroying(self, *args):
+        if self.rect.collidepoint(args[0].pos):
+            self.image = destructible_tiles_image['destroyed']
 
 
 class Player(pygame.sprite.Sprite):
@@ -214,6 +218,9 @@ class Player(pygame.sprite.Sprite):
             self.rect.x += self.x
             self.rect.y += self.y
 
+    def get_pos(self):
+        return self.rect.x, self.rect.y
+
 
 class Enemy(pygame.sprite.Sprite):
     pass
@@ -229,7 +236,11 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            for destroy in destructible_tiles_group:
+                Destructible_Tile.destroying(event)
 
+    destructible_tiles_group.update()
     all_sprites.update()
     player_group.update()
     all_sprites.draw(screen)
