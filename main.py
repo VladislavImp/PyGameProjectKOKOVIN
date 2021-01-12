@@ -201,7 +201,7 @@ class Destructible_Tile(pygame.sprite.Sprite):
         pass
 
 
-#Класс игрока
+#класс игрока
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y):
         super().__init__(player_group, all_sprites)
